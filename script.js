@@ -66,7 +66,8 @@ const carouselContainer = document.getElementById('carousel-container');
 const carouselDots = document.getElementById('carousel-dots');
 const prevBtn = document.getElementById('prev-btn');
 const nextBtn = document.getElementById('next-btn');
-const graduatesFaces = document.getElementById('graduates-faces');
+const graduatesRowTop = document.getElementById('graduates-row-top');
+const graduatesRowBottom = document.getElementById('graduates-row-bottom');
 const photoInput = document.getElementById('photoInput');
 const uploadBtn = document.getElementById('uploadBtn');
 const cameraIcon = document.getElementById('camera-icon');
@@ -75,6 +76,8 @@ const toast = document.getElementById('toast');
 
 let currentEvent = null;
 let currentIndex = 0;
+let topOffset = 0;
+let bottomOffset = 0;
 
 // Graduates Data (replace photos with real URLs anytime)
 const graduatesTitle = 'Kindergarten Completers';
@@ -120,26 +123,55 @@ const graduatesData = [
   };
 });
 
-function renderGraduates() {
-  if (!graduatesFaces) return;
-  graduatesFaces.innerHTML = '';
-
-  graduatesData.forEach((grad) => {
-    const row = document.createElement('button');
-    row.type = 'button';
-    row.className = 'w-full flex items-center gap-3 px-2 py-1.5 rounded-xl bg-white/10 hover:bg-white/15 transition-colors text-left';
-    row.setAttribute('aria-label', `Open photos for ${grad.name}`);
-    row.innerHTML = `
-      <div class="flex-shrink-0 w-9 h-9 rounded-full ring-2 ring-white/40 overflow-hidden bg-white/10">
-        <img src="${grad.avatar}" alt="${grad.name}" class="w-full h-full object-cover" loading="lazy" />
-      </div>
-      <span class="text-xs font-medium leading-snug text-white line-clamp-2">${grad.name}</span>
-    `;
-    row.addEventListener('click', () => {
-      openModal({ title: grad.name, date: graduatesTitle, images: grad.photos });
-    });
-    graduatesFaces.appendChild(row);
+function buildGraduateTile(grad) {
+  const tile = document.createElement('button');
+  tile.type = 'button';
+  tile.className = 'w-16 h-16 md:w-20 md:h-20 rounded-xl overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow flex-shrink-0';
+  tile.setAttribute('title', grad.name);
+  tile.innerHTML = `
+    <img src="${grad.avatar}" alt="${grad.name}" class="w-full h-full object-cover" loading="lazy" />
+  `;
+  tile.addEventListener('click', () => {
+    openModal({ title: grad.name, date: graduatesTitle, images: grad.photos });
   });
+  return tile;
+}
+
+function renderGraduatesCarousel() {
+  if (!graduatesRowTop || !graduatesRowBottom) return;
+  graduatesRowTop.innerHTML = '';
+  graduatesRowBottom.innerHTML = '';
+
+  const topGrads = graduatesData.filter((_, idx) => idx % 2 === 0);
+  const bottomGrads = graduatesData.filter((_, idx) => idx % 2 === 1);
+
+  // Duplicate each row so the animation can loop seamlessly
+  [topGrads, topGrads].flat().forEach((grad) => {
+    graduatesRowTop.appendChild(buildGraduateTile(grad));
+  });
+  [bottomGrads, bottomGrads].flat().forEach((grad) => {
+    graduatesRowBottom.appendChild(buildGraduateTile(grad));
+  });
+}
+
+function animateGraduatesCarousel() {
+  if (!graduatesRowTop || !graduatesRowBottom) return;
+
+  const speed = 0.3;
+
+  topOffset -= speed;
+  bottomOffset += speed;
+
+  const topWidth = graduatesRowTop.scrollWidth / 2 || 1;
+  const bottomWidth = graduatesRowBottom.scrollWidth / 2 || 1;
+
+  if (Math.abs(topOffset) >= topWidth) topOffset = 0;
+  if (Math.abs(bottomOffset) >= bottomWidth) bottomOffset = 0;
+
+  graduatesRowTop.style.transform = `translateX(${topOffset}px)`;
+  graduatesRowBottom.style.transform = `translateX(${bottomOffset}px)`;
+
+  requestAnimationFrame(animateGraduatesCarousel);
 }
 
 // Render the Timeline
@@ -338,6 +370,7 @@ function showToast(msg) {
 
 // Initial Run
 window.onload = () => {
-  renderGraduates();
+  renderGraduatesCarousel();
   renderTimeline();
+  requestAnimationFrame(animateGraduatesCarousel);
 };
