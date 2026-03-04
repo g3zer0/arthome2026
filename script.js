@@ -172,6 +172,18 @@ function updateArrows() {
 // Event Listeners
 scrollBtn.onclick = () => document.getElementById('timeline').scrollIntoView({ behavior: 'smooth' });
 closeModalBtn.onclick = closeModal;
+prevBtn.onclick = () => {
+  if (!currentEvent) return;
+  if (currentIndex > 0) {
+    scrollToImage(currentIndex - 1);
+  }
+};
+nextBtn.onclick = () => {
+  if (!currentEvent) return;
+  if (currentIndex < currentEvent.images.length - 1) {
+    scrollToImage(currentIndex + 1);
+  }
+};
 
 carouselContainer.onscroll = () => {
   const newIndex = Math.round(carouselContainer.scrollLeft / carouselContainer.clientWidth);
