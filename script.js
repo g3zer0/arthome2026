@@ -66,6 +66,7 @@ const carouselContainer = document.getElementById('carousel-container');
 const carouselDots = document.getElementById('carousel-dots');
 const prevBtn = document.getElementById('prev-btn');
 const nextBtn = document.getElementById('next-btn');
+const graduatesFaces = document.getElementById('graduates-faces');
 const photoInput = document.getElementById('photoInput');
 const uploadBtn = document.getElementById('uploadBtn');
 const cameraIcon = document.getElementById('camera-icon');
@@ -74,6 +75,69 @@ const toast = document.getElementById('toast');
 
 let currentEvent = null;
 let currentIndex = 0;
+
+// Graduates Data (replace photos with real URLs anytime)
+const graduatesTitle = 'Kindergarten Completers';
+const graduatesData = [
+  'Alquizar, Braxton Quinn B.',
+  'Camarista, Lia Isabelle L.',
+  'Dela Cruz, Mervin Jr. D.',
+  'Denila, Ashiana Ysabelle Y.',
+  'Dulaugon, Elisha Faith H.',
+  'Evangelista, Tara Kaisley S.',
+  'Gabo, Zheanne Nathanielle T.',
+  'Gamueta, Carisza Maureen M.',
+  'Gialon, Eonah Iris Saoirse R.',
+  'Lopez, Nathania Erised F.',
+  'Maghamil, Jen Myrrh L.',
+  'Mahinay, Astrid Nathania T.',
+  'Mallorca, Bren Christoffe A.',
+  'Manlupig, Andrea Jurez C.',
+  'Mansueto, Denise Zephora A.',
+  'Marilla, Pat Destiny P.',
+  'Masong, Aiah B.',
+  'Miralles, Arthemis Thoby N.',
+  'Pahoyo, Zhea May T.',
+  'Panla-an, Jan Mars L.',
+  'Pañer, Krysthea Hera',
+  'Potoy, Magnus Gaven M.',
+  'Potoy, Theophilus M.',
+  'Quijote, Kelly Thaddia M.',
+  'Redito, Rigel Moon Aries K.',
+  'Salarda, Teomasio Joeleb',
+  'Silagan, Adih Feign C.',
+  'Vicente, Kristiana J.',
+].map((name) => {
+  const seed = encodeURIComponent(name.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '-').replace(/-+/g, '-').replace(/(^-|-$)/g, ''));
+  return {
+    name,
+    avatar: `https://api.dicebear.com/9.x/adventurer/svg?seed=${seed}`,
+    photos: [
+      `https://picsum.photos/seed/grad-${seed}-1/1200/800`,
+      `https://picsum.photos/seed/grad-${seed}-2/800/1200`,
+      `https://picsum.photos/seed/grad-${seed}-3/1000/1000`,
+    ],
+  };
+});
+
+function renderGraduates() {
+  if (!graduatesFaces) return;
+  graduatesFaces.innerHTML = '';
+
+  graduatesData.forEach((grad) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'relative flex-shrink-0 w-12 h-12 rounded-full ring-2 ring-white/30 hover:ring-white/70 transition-all overflow-hidden bg-white/10';
+    btn.setAttribute('aria-label', `Open photos for ${grad.name}`);
+    btn.innerHTML = `
+      <img src="${grad.avatar}" alt="${grad.name}" class="w-full h-full object-cover" loading="lazy" />
+    `;
+    btn.addEventListener('click', () => {
+      openModal({ title: grad.name, date: graduatesTitle, images: grad.photos });
+    });
+    graduatesFaces.appendChild(btn);
+  });
+}
 
 // Render the Timeline
 function renderTimeline() {
@@ -165,8 +229,23 @@ function updateCurrentIndex(index) {
 }
 
 function updateArrows() {
-  prevBtn.style.display = currentIndex > 0 ? 'block' : 'none';
-  nextBtn.style.display = currentIndex < currentEvent.images.length - 1 ? 'block' : 'none';
+  // These buttons already use Tailwind `hidden md:block` (display-based).
+  // Keep our runtime control display-based too to avoid mixing mechanisms.
+  if (!currentEvent) {
+    prevBtn.style.display = 'none';
+    nextBtn.style.display = 'none';
+    return;
+  }
+
+  const atStart = currentIndex <= 0;
+  const atEnd = currentIndex >= currentEvent.images.length - 1;
+
+  // Use inline display only to force-hide; otherwise let CSS (`hidden md:block`)
+  // determine whether buttons are shown for the current breakpoint.
+  prevBtn.style.display = atStart ? 'none' : '';
+  nextBtn.style.display = atEnd ? 'none' : '';
+  prevBtn.setAttribute('aria-disabled', atStart ? 'true' : 'false');
+  nextBtn.setAttribute('aria-disabled', atEnd ? 'true' : 'false');
 }
 
 // Event Listeners
@@ -255,4 +334,7 @@ function showToast(msg) {
 }
 
 // Initial Run
-window.onload = renderTimeline;
+window.onload = () => {
+  renderGraduates();
+  renderTimeline();
+};

@@ -29,8 +29,24 @@
             <h2 class="text-3xl font-bold text-gray-900 mb-2">Year in Review</h2>
             <p class="text-gray-500">A timeline of our best moments</p>
         </div>
-        <div class="absolute left-[39px] top-[140px] bottom-8 w-0.5 bg-gray-200 rounded-full"></div>
-        <div id="timeline-container" class="space-y-10 relative"></div>
+
+        <section id="graduates-hero" class="mb-12">
+            <div class="flex items-start gap-5 group">
+                <div class="relative z-10 mt-1.5">
+                    <div class="w-4 h-4 rounded-full bg-purple-600 ring-4 ring-gray-50 transition-all duration-300"></div>
+                </div>
+                <div class="flex-1 bg-gradient-to-br from-purple-600 to-blue-600 text-white rounded-2xl shadow-md border border-white/10 p-5">
+                    <div class="text-xs font-semibold text-white/80 uppercase tracking-wider mb-1.5">Graduates</div>
+                    <h3 class="text-lg font-extrabold mb-2 leading-tight">Kindergarten Completers</h3>
+                    <p class="text-white/80 text-sm mb-4">Click a face to view their photos.</p>
+                    <div id="graduates-faces" class="flex gap-2.5 overflow-x-auto pb-2 hide-scrollbar"></div>
+                </div>
+            </div>
+        </section>
+        <div class="relative pb-8">
+            <div class="absolute left-[39px] top-0 bottom-0 w-0.5 bg-gray-200 rounded-full"></div>
+            <div id="timeline-container" class="space-y-10 relative"></div>
+        </div>
     </main>
 
     <div id="gallery-modal" class="fixed inset-0 z-50 bg-black/95 flex flex-col backdrop-blur-xl hidden opacity-0 transition-opacity duration-300">
