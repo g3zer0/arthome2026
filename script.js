@@ -66,8 +66,10 @@ const carouselContainer = document.getElementById('carousel-container');
 const carouselDots = document.getElementById('carousel-dots');
 const prevBtn = document.getElementById('prev-btn');
 const nextBtn = document.getElementById('next-btn');
-const graduatesRowTop = document.getElementById('graduates-row-top');
-const graduatesRowBottom = document.getElementById('graduates-row-bottom');
+const graduatesViewport = document.getElementById('graduates-viewport');
+const graduatesTrack = document.getElementById('graduates-track');
+const graduatesPrevBtn = document.getElementById('graduates-prev');
+const graduatesNextBtn = document.getElementById('graduates-next');
 const photoInput = document.getElementById('photoInput');
 const uploadBtn = document.getElementById('uploadBtn');
 const cameraIcon = document.getElementById('camera-icon');
@@ -76,8 +78,8 @@ const toast = document.getElementById('toast');
 
 let currentEvent = null;
 let currentIndex = 0;
-let topOffset = 0;
-let bottomOffset = 0;
+let graduatesIndex = 0;
+let graduatesAutoTimer = null;
 
 // Graduates Data (replace photos with real URLs anytime)
 const graduatesTitle = 'Kindergarten Completers';
@@ -126,13 +128,13 @@ const graduatesData = [
 function buildGraduateTile(grad) {
   const tile = document.createElement('button');
   tile.type = 'button';
-  tile.className = 'w-20 md:w-24 flex flex-col items-center gap-1 rounded-xl bg-white shadow-sm hover:shadow-md transition-shadow flex-shrink-0 py-1';
+  tile.className = 'w-40 md:w-52 flex-shrink-0 flex flex-col gap-2';
   tile.setAttribute('title', grad.name);
   tile.innerHTML = `
-    <div class="w-14 h-14 md:w-16 md:h-16 rounded-lg overflow-hidden bg-gray-100">
-      <img src="${grad.avatar}" alt="${grad.name}" class="w-full h-full object-cover" loading="lazy" />
+    <div class="w-full rounded-xl overflow-hidden bg-gray-100 relative" style="padding-top: 75%;">
+      <img src="${grad.avatar}" alt="${grad.name}" class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
     </div>
-    <p class="w-full text-[9px] md:text-[10px] font-medium text-gray-800 text-center leading-tight line-clamp-2">${grad.name}</p>
+    <p class="text-xs md:text-sm font-semibold text-gray-800 text-center leading-snug line-clamp-2">${grad.name}</p>
   `;
   tile.addEventListener('click', () => {
     openModal({ title: grad.name, date: graduatesTitle, images: grad.photos });
@@ -141,40 +143,66 @@ function buildGraduateTile(grad) {
 }
 
 function renderGraduatesCarousel() {
-  if (!graduatesRowTop || !graduatesRowBottom) return;
-  graduatesRowTop.innerHTML = '';
-  graduatesRowBottom.innerHTML = '';
+  if (!graduatesViewport || !graduatesTrack) return;
+  graduatesTrack.innerHTML = '';
+  graduatesIndex = 0;
 
-  const topGrads = graduatesData.filter((_, idx) => idx % 2 === 0);
-  const bottomGrads = graduatesData.filter((_, idx) => idx % 2 === 1);
+  graduatesData.forEach((grad) => {
+    graduatesTrack.appendChild(buildGraduateTile(grad));
+  });
 
-  // Duplicate each row so the animation can loop seamlessly
-  [topGrads, topGrads].flat().forEach((grad) => {
-    graduatesRowTop.appendChild(buildGraduateTile(grad));
-  });
-  [bottomGrads, bottomGrads].flat().forEach((grad) => {
-    graduatesRowBottom.appendChild(buildGraduateTile(grad));
-  });
+  updateGraduatesPosition();
+  setupGraduatesControls();
+  startGraduatesAutoSlide();
 }
 
-function animateGraduatesCarousel() {
-  if (!graduatesRowTop || !graduatesRowBottom) return;
+function getGraduateStep() {
+  if (!graduatesTrack || !graduatesTrack.children.length) return 0;
+  const first = graduatesTrack.children[0];
+  const style = window.getComputedStyle(graduatesTrack);
+  const gap = parseFloat(style.columnGap || style.gap || '0') || 0;
+  return first.offsetWidth + gap;
+}
 
-  const speed = 0.3;
+function updateGraduatesPosition() {
+  if (!graduatesTrack || !graduatesViewport) return;
+  const step = getGraduateStep();
+  if (!step) return;
 
-  topOffset -= speed;
-  bottomOffset += speed;
+  const count = graduatesTrack.children.length;
+  if (!count) return;
 
-  const topWidth = graduatesRowTop.scrollWidth / 2 || 1;
-  const bottomWidth = graduatesRowBottom.scrollWidth / 2 || 1;
+  // Wrap index so it always stays in [0, count)
+  graduatesIndex = ((graduatesIndex % count) + count) % count;
 
-  if (Math.abs(topOffset) >= topWidth) topOffset = 0;
-  if (Math.abs(bottomOffset) >= bottomWidth) bottomOffset = 0;
+  const translateX = -graduatesIndex * step;
+  graduatesTrack.style.transform = `translateX(${translateX}px)`;
+}
 
-  graduatesRowTop.style.transform = `translateX(${topOffset}px)`;
-  graduatesRowBottom.style.transform = `translateX(${bottomOffset}px)`;
+function moveGraduates(delta) {
+  if (!graduatesTrack || !graduatesTrack.children.length) return;
+  graduatesIndex += delta;
+  updateGraduatesPosition();
+}
 
-  requestAnimationFrame(animateGraduatesCarousel);
+function startGraduatesAutoSlide() {
+  if (graduatesAutoTimer) {
+    clearInterval(graduatesAutoTimer);
+  }
+  graduatesAutoTimer = setInterval(() => moveGraduates(1), 4000);
+}
+
+function setupGraduatesControls() {
+  if (!graduatesPrevBtn || !graduatesNextBtn) return;
+
+  graduatesPrevBtn.onclick = () => {
+    moveGraduates(-1);
+    startGraduatesAutoSlide();
+  };
+  graduatesNextBtn.onclick = () => {
+    moveGraduates(1);
+    startGraduatesAutoSlide();
+  };
 }
 
 // Render the Timeline
@@ -375,5 +403,4 @@ function showToast(msg) {
 window.onload = () => {
   renderGraduatesCarousel();
   renderTimeline();
-  requestAnimationFrame(animateGraduatesCarousel);
 };
