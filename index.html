@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ArtHome 2026 Photo Submissions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-gray-50 font-sans text-gray-900 selection:bg-blue-100">
+
+    <section class="relative min-h-[80vh] flex flex-col items-center justify-center text-center px-6 bg-gradient-to-b from-blue-900 to-blue-700 text-white overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://i0.wp.com/cloudblog.zno.com/wp-content/uploads/2024/03/use_silhouettes_for_graduates.jpg?ssl=1')] bg-cover bg-center opacity-30 mix-blend-overlay"></div>
+        <div class="relative z-10 max-w-2xl mx-auto flex flex-col items-center">
+            <div class="bg-white/20 p-5 rounded-full backdrop-blur-sm mb-6 shadow-xl transform transition-transform duration-700 hover:scale-110">
+                <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-yellow-400"><path d="M21.42 10.922a2 2 0 0 1-.019 3.838L12.83 19.818a2 2 0 0 1-1.66 0L2.6 14.76a2 2 0 0 1-.019-3.838l8.57-4.454a2 2 0 0 1 1.7 0Z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg>
+            </div>
+            <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-4 drop-shadow-lg">ArtHome <br/> Class of 2025</h1>
+            <p class="text-lg md:text-xl text-blue-100 mb-10 max-w-lg drop-shadow-md">Congratulations graduates! Let's take a look back at our incredible journey.</p>
+            <button id="scrollBtn" class="group flex items-center gap-2 bg-white text-blue-900 px-8 py-4 rounded-full font-bold hover:bg-blue-50 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1">
+                Review the Year
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:translate-y-1 transition-transform"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+            </button>
+        </div>
+    </section>
+
+    <main id="timeline" class="max-w-md mx-auto px-6 py-16 relative">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-900 mb-2">Year in Review</h2>
+            <p class="text-gray-500">A timeline of our best moments</p>
+        </div>
+        <div class="absolute left-[39px] top-[140px] bottom-8 w-0.5 bg-gray-200 rounded-full"></div>
+        <div id="timeline-container" class="space-y-10 relative"></div>
+    </main>
+
+    <div id="gallery-modal" class="fixed inset-0 z-50 bg-black/95 flex flex-col backdrop-blur-xl hidden opacity-0 transition-opacity duration-300">
+        <div class="flex justify-between items-center p-4 text-white absolute top-0 left-0 right-0 z-20 bg-gradient-to-b from-black/80 to-transparent pb-8">
+            <div>
+                <h2 id="modal-title" class="text-lg font-bold"></h2>
+                <p id="modal-date" class="text-sm text-gray-300"></p>
+            </div>
+            <button id="close-modal" class="p-2 bg-white/10 rounded-full hover:bg-white/20 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            </button>
+        </div>
+        
+        <div class="flex-1 w-full h-full relative group">
+            <div id="carousel-container" class="w-full h-full flex overflow-x-auto snap-x snap-mandatory hide-scrollbar"></div>
+            <button id="prev-btn" class="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-black/50 text-white rounded-full backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity hidden md:block hover:bg-black/70">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <button id="next-btn" class="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-black/50 text-white rounded-full backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity hidden md:block hover:bg-black/70">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+        </div>
+
+        <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent flex flex-col items-center gap-4 z-20">
+            <div id="carousel-dots" class="flex gap-2"></div>
+            <p class="text-white/50 text-xs font-medium tracking-widest uppercase flex items-center gap-2">
+                <span class="md:hidden">Swipe to explore</span>
+                <span class="hidden md:inline">Use arrow keys to explore</span>
+            </p>
+        </div>
+    </div>
+
+    <input type="file" id="photoInput" accept="image/*" capture="environment" class="hidden" />
+    <div id="toast" class="fixed bottom-24 right-6 z-50 bg-gray-900 text-white px-4 py-2 rounded-lg shadow-lg text-sm font-medium transition-all duration-300 translate-y-20 opacity-0 pointer-events-none"></div>
+    <button id="uploadBtn" class="fixed bottom-6 right-6 z-40 bg-blue-600 text-white p-4 rounded-full shadow-xl hover:bg-blue-700 hover:scale-105 transition-all disabled:opacity-70 flex items-center justify-center">
+        <svg id="camera-icon" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+        <svg id="loader-icon" class="hidden animate-spin" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+    </button>
+
+    <script src="script.js"></script>
+</body>
+</html>
