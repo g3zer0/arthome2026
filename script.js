@@ -178,6 +178,24 @@ carouselContainer.onscroll = () => {
   if (newIndex !== currentIndex) updateCurrentIndex(newIndex);
 };
 
+// Keyboard navigation for carousel
+document.addEventListener('keydown', (e) => {
+  // Only handle keys when modal is visible and an event is active
+  if (!currentEvent || modal.classList.contains('hidden')) return;
+
+  if (e.key === 'ArrowRight') {
+    if (currentIndex < currentEvent.images.length - 1) {
+      e.preventDefault();
+      scrollToImage(currentIndex + 1);
+    }
+  } else if (e.key === 'ArrowLeft') {
+    if (currentIndex > 0) {
+      e.preventDefault();
+      scrollToImage(currentIndex - 1);
+    }
+  }
+});
+
 // Upload Functionality
 uploadBtn.onclick = () => photoInput.click();
 
