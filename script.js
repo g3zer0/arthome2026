@@ -126,10 +126,13 @@ const graduatesData = [
 function buildGraduateTile(grad) {
   const tile = document.createElement('button');
   tile.type = 'button';
-  tile.className = 'w-16 h-16 md:w-20 md:h-20 rounded-xl overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow flex-shrink-0';
+  tile.className = 'w-20 md:w-24 flex flex-col items-center gap-1 rounded-xl bg-white shadow-sm hover:shadow-md transition-shadow flex-shrink-0 py-1';
   tile.setAttribute('title', grad.name);
   tile.innerHTML = `
-    <img src="${grad.avatar}" alt="${grad.name}" class="w-full h-full object-cover" loading="lazy" />
+    <div class="w-14 h-14 md:w-16 md:h-16 rounded-lg overflow-hidden bg-gray-100">
+      <img src="${grad.avatar}" alt="${grad.name}" class="w-full h-full object-cover" loading="lazy" />
+    </div>
+    <p class="w-full text-[9px] md:text-[10px] font-medium text-gray-800 text-center leading-tight line-clamp-2">${grad.name}</p>
   `;
   tile.addEventListener('click', () => {
     openModal({ title: grad.name, date: graduatesTitle, images: grad.photos });
