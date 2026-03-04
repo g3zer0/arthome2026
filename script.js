@@ -212,9 +212,15 @@ function renderTimeline() {
     card.className = "flex items-start gap-5 cursor-pointer group opacity-0 translate-y-5 transition-all duration-700 ease-out";
     card.innerHTML = `
       <div class="relative z-10 mt-1.5">
-        <div class="w-4 h-4 rounded-full bg-blue-600 ring-4 ring-gray-50 group-hover:ring-blue-100 transition-all duration-300"></div>
+        <div class="w-5 h-5 rounded-full bg-blue-600 ring-4 ring-blue-100 flex items-center justify-center shadow-md">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 10L12 4 2 10l10 6 10-6Z"/>
+            <path d="M6 12v5c0 .6.4 1.1 1 1.3l5 1.7 5-1.7c.6-.2 1-.7 1-1.3v-5"/>
+          </svg>
+        </div>
       </div>
-      <div class="flex-1 bg-white rounded-2xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition-shadow duration-300">
+      <div class="flex-1 bg-white rounded-2xl shadow-sm border border-gray-100 p-5 relative timeline-card">
+        <div class="hidden md:block absolute -left-6 top-8 w-6 h-0.5 bg-blue-100"></div>
         <div class="text-xs font-semibold text-blue-600 uppercase tracking-wider mb-1.5">${event.date}</div>
         <h3 class="text-lg font-bold text-gray-900 mb-2 leading-tight">${event.title}</h3>
         <p class="text-gray-600 text-sm mb-4 line-clamp-2">${event.description}</p>
@@ -236,6 +242,11 @@ function renderTimeline() {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             entry.target.classList.remove('opacity-0', 'translate-y-5');
+            const inner = entry.target.querySelector('.timeline-card');
+            if (inner) {
+              inner.classList.add('timeline-card-glow');
+              setTimeout(() => inner.classList.remove('timeline-card-glow'), 900);
+            }
             observer.unobserve(entry.target);
           }
         });

@@ -6,3 +6,30 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+.timeline-card {
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.timeline-card-glow,
+.timeline-card:hover {
+  animation: timeline-glow 0.9s ease-out;
+}
+
+@keyframes timeline-glow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.55),
+                0 10px 25px rgba(15, 23, 42, 0.18);
+    transform: translateY(0);
+  }
+  60% {
+    box-shadow: 0 0 0 6px rgba(37, 99, 235, 0.25),
+                0 18px 35px rgba(15, 23, 42, 0.22);
+    transform: translateY(-2px);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0),
+                0 12px 28px rgba(15, 23, 42, 0.18);
+    transform: translateY(-1px);
+  }
+}
