@@ -125,17 +125,20 @@ function renderGraduates() {
   graduatesFaces.innerHTML = '';
 
   graduatesData.forEach((grad) => {
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'relative flex-shrink-0 w-12 h-12 rounded-full ring-2 ring-white/30 hover:ring-white/70 transition-all overflow-hidden bg-white/10';
-    btn.setAttribute('aria-label', `Open photos for ${grad.name}`);
-    btn.innerHTML = `
-      <img src="${grad.avatar}" alt="${grad.name}" class="w-full h-full object-cover" loading="lazy" />
+    const row = document.createElement('button');
+    row.type = 'button';
+    row.className = 'w-full flex items-center gap-3 px-2 py-1.5 rounded-xl bg-white/10 hover:bg-white/15 transition-colors text-left';
+    row.setAttribute('aria-label', `Open photos for ${grad.name}`);
+    row.innerHTML = `
+      <div class="flex-shrink-0 w-9 h-9 rounded-full ring-2 ring-white/40 overflow-hidden bg-white/10">
+        <img src="${grad.avatar}" alt="${grad.name}" class="w-full h-full object-cover" loading="lazy" />
+      </div>
+      <span class="text-xs font-medium leading-snug text-white line-clamp-2">${grad.name}</span>
     `;
-    btn.addEventListener('click', () => {
+    row.addEventListener('click', () => {
       openModal({ title: grad.name, date: graduatesTitle, images: grad.photos });
     });
-    graduatesFaces.appendChild(btn);
+    graduatesFaces.appendChild(row);
   });
 }
 
