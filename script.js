@@ -110,7 +110,7 @@ function buildGraduateTile(grad, sectionTitle) {
   tile.setAttribute('title', grad.name);
   tile.innerHTML = `
     <div class="w-full aspect-square rounded-xl overflow-hidden bg-gray-100 relative">
-      <img src="${grad.avatar}" alt="${grad.name}" class="absolute inset-0 w-full h-full object-cover object-center" loading="lazy" />
+      <img src="${grad.avatar}" alt="${grad.name}" class="absolute inset-0 w-full h-full object-cover object-[center_25%]" loading="lazy" />
     </div>
     <p class="text-xs md:text-sm font-semibold text-gray-800 text-center leading-snug line-clamp-2">${grad.name}</p>
   `;
