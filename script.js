@@ -26,6 +26,10 @@ const graduatesViewport = document.getElementById('graduates-viewport');
 const graduatesTrack = document.getElementById('graduates-track');
 const graduatesPrevBtn = document.getElementById('graduates-prev');
 const graduatesNextBtn = document.getElementById('graduates-next');
+const grade6Viewport = document.getElementById('grade6-viewport');
+const grade6Track = document.getElementById('grade6-track');
+const grade6PrevBtn = document.getElementById('grade6-prev');
+const grade6NextBtn = document.getElementById('grade6-next');
 const photoInput = document.getElementById('photoInput');
 const uploadBtn = document.getElementById('uploadBtn');
 const cameraIcon = document.getElementById('camera-icon');
@@ -36,6 +40,8 @@ let currentEvent = null;
 let currentIndex = 0;
 let graduatesIndex = 0;
 let graduatesAutoTimer = null;
+let grade6Index = 0;
+let grade6AutoTimer = null;
 
 // Graduates Data (replace photos with real URLs anytime)
 const graduatesTitle = 'Kindergarten Completers';
@@ -81,7 +87,27 @@ const graduatesData = [
   };
 });
 
-function buildGraduateTile(grad) {
+// Grade 6 Completers (edit names and add real photo URLs as needed)
+const grade6Title = 'Grade 6 Completers';
+const grade6Data = [
+  'Grade 6 Completer 1', 'Grade 6 Completer 2', 'Grade 6 Completer 3', 'Grade 6 Completer 4', 'Grade 6 Completer 5',
+  'Grade 6 Completer 6', 'Grade 6 Completer 7', 'Grade 6 Completer 8', 'Grade 6 Completer 9', 'Grade 6 Completer 10',
+  'Grade 6 Completer 11', 'Grade 6 Completer 12',
+].map((name) => {
+  const seed = encodeURIComponent(name.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '-').replace(/-+/g, '-').replace(/(^-|-$)/g, ''));
+  return {
+    name,
+    avatar: `https://api.dicebear.com/9.x/adventurer/svg?seed=grade6-${seed}`,
+    photos: [
+      `https://picsum.photos/seed/grade6-${seed}-1/1200/800`,
+      `https://picsum.photos/seed/grade6-${seed}-2/800/1200`,
+      `https://picsum.photos/seed/grade6-${seed}-3/1000/1000`,
+    ],
+  };
+});
+
+function buildGraduateTile(grad, sectionTitle) {
+  const title = sectionTitle || graduatesTitle;
   const tile = document.createElement('button');
   tile.type = 'button';
   tile.className = 'w-40 md:w-52 flex-shrink-0 flex flex-col gap-2';
@@ -93,7 +119,7 @@ function buildGraduateTile(grad) {
     <p class="text-xs md:text-sm font-semibold text-gray-800 text-center leading-snug line-clamp-2">${grad.name}</p>
   `;
   tile.addEventListener('click', () => {
-    openModal({ title: grad.name, date: graduatesTitle, images: grad.photos });
+    openModal({ title: grad.name, date: title, images: grad.photos });
   });
   return tile;
 }
@@ -104,7 +130,7 @@ function renderGraduatesCarousel() {
   graduatesIndex = 0;
 
   graduatesData.forEach((grad) => {
-    graduatesTrack.appendChild(buildGraduateTile(grad));
+    graduatesTrack.appendChild(buildGraduateTile(grad, graduatesTitle));
   });
 
   updateGraduatesPosition();
@@ -161,19 +187,80 @@ function setupGraduatesControls() {
   };
 }
 
+// Grade 6 Completers carousel
+function renderGrade6Carousel() {
+  if (!grade6Viewport || !grade6Track) return;
+  grade6Track.innerHTML = '';
+  grade6Index = 0;
+
+  grade6Data.forEach((grad) => {
+    grade6Track.appendChild(buildGraduateTile(grad, grade6Title));
+  });
+
+  updateGrade6Position();
+  setupGrade6Controls();
+  startGrade6AutoSlide();
+}
+
+function getGrade6Step() {
+  if (!grade6Track || !grade6Track.children.length) return 0;
+  const first = grade6Track.children[0];
+  const style = window.getComputedStyle(grade6Track);
+  const gap = parseFloat(style.columnGap || style.gap || '0') || 0;
+  return first.offsetWidth + gap;
+}
+
+function updateGrade6Position() {
+  if (!grade6Track || !grade6Viewport) return;
+  const step = getGrade6Step();
+  if (!step) return;
+  const count = grade6Track.children.length;
+  if (!count) return;
+  grade6Index = ((grade6Index % count) + count) % count;
+  grade6Track.style.transform = `translateX(${-grade6Index * step}px)`;
+}
+
+function moveGrade6(delta) {
+  if (!grade6Track || !grade6Track.children.length) return;
+  grade6Index += delta;
+  updateGrade6Position();
+}
+
+function startGrade6AutoSlide() {
+  if (grade6AutoTimer) clearInterval(grade6AutoTimer);
+  grade6AutoTimer = setInterval(() => moveGrade6(1), 4000);
+}
+
+function setupGrade6Controls() {
+  if (!grade6PrevBtn || !grade6NextBtn) return;
+  grade6PrevBtn.onclick = () => { moveGrade6(-1); startGrade6AutoSlide(); };
+  grade6NextBtn.onclick = () => { moveGrade6(1); startGrade6AutoSlide(); };
+}
+
+// Timeline marker icons (varied per card)
+const timelineIcons = [
+  '<path d="M22 10L12 4 2 10l10 6 10-6Z"/><path d="M6 12v5c0 .6.4 1.1 1 1.3l5 1.7 5-1.7c.6-.2 1-.7 1-1.3v-5"/>',
+  '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M12 6v6"/><path d="M9 9h6"/>',
+  '<path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 10l5.813 1.912a2 2 0 0 1 1.275 1.275L12 18l1.912-5.813a2 2 0 0 1 1.275-1.275L21 10l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3z"/>',
+  '<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>',
+  '<path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/>',
+  '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+];
+function getTimelineIcon(index) {
+  return timelineIcons[index % timelineIcons.length];
+}
+
 // Render the Timeline
 function renderTimeline() {
   timelineData.forEach((event, index) => {
+    const iconPath = getTimelineIcon(index);
     const card = document.createElement('div');
-    card.className = "flex flex-col items-center cursor-pointer group opacity-0 translate-y-5 transition-all duration-700 ease-out -mb-8 last:mb-0";
+    card.className = "flex flex-col items-center cursor-pointer group opacity-0 translate-y-5 transition-all duration-700 ease-out mb-10 last:mb-0";
     card.innerHTML = `
       <div class="relative z-10 flex items-center justify-center w-5 h-5 rounded-full bg-blue-600 ring-4 ring-blue-100 shadow-md shrink-0">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M22 10L12 4 2 10l10 6 10-6Z"/>
-          <path d="M6 12v5c0 .6.4 1.1 1 1.3l5 1.7 5-1.7c.6-.2 1-.7 1-1.3v-5"/>
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${iconPath}</svg>
       </div>
-      <div class="flex-1 w-full -mt-2.5 pt-2.5 bg-white rounded-2xl shadow-sm border border-gray-100 p-5 relative timeline-card max-w-md">
+      <div class="flex-1 w-full mt-1 pt-2 bg-white rounded-2xl shadow-sm border border-gray-100 p-5 relative timeline-card max-w-md">
         <div class="text-xs font-semibold text-blue-600 uppercase tracking-wider mb-1.5">${event.date}</div>
         <h3 class="text-lg font-bold text-gray-900 mb-2 leading-tight">${event.title}</h3>
         <p class="text-gray-600 text-sm mb-4 line-clamp-2">${event.description}</p>
@@ -366,5 +453,6 @@ function showToast(msg) {
 // Initial Run
 window.onload = () => {
   renderGraduatesCarousel();
+  renderGrade6Carousel();
   renderTimeline();
 };
