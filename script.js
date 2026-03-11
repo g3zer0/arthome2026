@@ -1,3 +1,6 @@
+// Placeholder image when photos fail to load
+const PLACEHOLDER_IMAGE = 'https://placehold.co/400x400/e2e8f0/64748b?text=Photo';
+
 // Timeline Data: synced with showcase pages (showcase.html?gallery=<id>)
 const timelineData = [
   { id: 'class-a', date: '2025–2026', title: 'Class A Memories', description: 'Moments and memories from Class A.', images: ['https://picsum.photos/seed/classa1/800/600', 'https://picsum.photos/seed/classa2/800/600', 'https://picsum.photos/seed/classa3/800/600'] },
@@ -260,7 +263,7 @@ function renderTimeline() {
         <h3 class="text-lg font-bold text-gray-900 mb-2 leading-tight">${event.title}</h3>
         <p class="text-gray-600 text-sm mb-4 line-clamp-2">${event.description}</p>
         <div class="relative rounded-xl overflow-hidden h-32 bg-gray-100">
-          <img src="${event.images[0]}" alt="${event.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+          <img src="${event.images[0]}" alt="${event.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.onerror=null;this.src='${PLACEHOLDER_IMAGE}';" />
           <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
           <div class="absolute bottom-3 right-3 bg-black/40 backdrop-blur-md text-white text-xs font-medium px-2.5 py-1 rounded-full flex items-center gap-1.5">
             ${event.images.length} Photos
