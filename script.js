@@ -102,20 +102,21 @@ const grade6Data = [
   return { name, avatar: src, photos: [src] };
 });
 
-function buildGraduateTile(grad, sectionTitle) {
-  const title = sectionTitle || graduatesTitle;
+function buildGraduateTile(grad, sectionTitle, section, index) {
   const tile = document.createElement('button');
   tile.type = 'button';
   tile.className = 'w-40 md:w-52 flex-shrink-0 flex flex-col gap-2';
   tile.setAttribute('title', grad.name);
   tile.innerHTML = `
     <div class="w-full aspect-square rounded-xl overflow-hidden bg-gray-100 relative">
-      <img src="${grad.avatar}" alt="${grad.name}" class="absolute inset-0 w-full h-full object-cover object-[center_25%]" loading="lazy" />
+      <img src="${grad.avatar}" alt="${grad.name}" class="absolute inset-0 w-full h-full object-cover object-[center_25%]" loading="lazy" onerror="this.onerror=null;this.src='${PLACEHOLDER_IMAGE}';" />
     </div>
     <p class="text-xs md:text-sm font-semibold text-gray-800 text-center leading-snug line-clamp-2">${grad.name}</p>
   `;
   tile.addEventListener('click', () => {
-    openModal({ title: grad.name, date: title, images: grad.photos });
+    const id = typeof index === 'number' ? index : 0;
+    const key = section === 'grade6' ? 'grade6' : 'kindergarten';
+    window.location.href = `profile.html?completer=${key}&id=${id}`;
   });
   return tile;
 }
@@ -125,8 +126,8 @@ function renderGraduatesCarousel() {
   graduatesTrack.innerHTML = '';
   graduatesIndex = 0;
 
-  graduatesData.forEach((grad) => {
-    graduatesTrack.appendChild(buildGraduateTile(grad, graduatesTitle));
+  graduatesData.forEach((grad, i) => {
+    graduatesTrack.appendChild(buildGraduateTile(grad, graduatesTitle, 'kindergarten', i));
   });
 
   updateGraduatesPosition();
@@ -189,8 +190,8 @@ function renderGrade6Carousel() {
   grade6Track.innerHTML = '';
   grade6Index = 0;
 
-  grade6Data.forEach((grad) => {
-    grade6Track.appendChild(buildGraduateTile(grad, grade6Title));
+  grade6Data.forEach((grad, i) => {
+    grade6Track.appendChild(buildGraduateTile(grad, grade6Title, 'grade6', i));
   });
 
   updateGrade6Position();
