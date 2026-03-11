@@ -44,6 +44,26 @@
         </div>
     </section>
 
+    <section class="bg-gray-50/80 backdrop-blur-sm border-b border-gray-100">
+        <div class="max-w-3xl mx-auto px-6 py-6 space-y-4">
+            <div class="flex items-baseline justify-between gap-4">
+                <h2 class="text-xs font-semibold tracking-[0.2em] uppercase text-gray-500">Grade 6 Completers</h2>
+                <p class="text-[11px] text-gray-400">Tap a graduate to view photos</p>
+            </div>
+            <div class="relative">
+                <button id="grade6-prev" class="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 z-10 w-9 h-9 items-center justify-center rounded-full bg-white shadow-md border border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-gray-800 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                </button>
+                <div id="grade6-viewport" class="overflow-hidden">
+                    <div id="grade6-track" class="flex gap-4 will-change-transform"></div>
+                </div>
+                <button id="grade6-next" class="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-10 w-9 h-9 items-center justify-center rounded-full bg-white shadow-md border border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-gray-800 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                </button>
+            </div>
+        </div>
+    </section>
+
     <main id="timeline" class="w-full max-w-lg mx-auto px-6 py-16 relative">
         <div class="text-center mb-12">
             <h2 class="text-3xl font-bold text-gray-900 mb-2">Year in Review</h2>
