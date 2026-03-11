@@ -103,9 +103,12 @@ const grade6Data = [
 });
 
 function buildGraduateTile(grad, sectionTitle, section, index) {
-  const tile = document.createElement('button');
-  tile.type = 'button';
-  tile.className = 'w-40 md:w-52 flex-shrink-0 flex flex-col gap-2';
+  const id = typeof index === 'number' ? index : 0;
+  const key = section === 'grade6' ? 'grade6' : 'kindergarten';
+  const href = `profile.html?completer=${key}&id=${id}`;
+  const tile = document.createElement('a');
+  tile.href = href;
+  tile.className = 'w-40 md:w-52 flex-shrink-0 flex flex-col gap-2 no-underline focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 rounded-xl';
   tile.setAttribute('title', grad.name);
   tile.innerHTML = `
     <div class="w-full aspect-square rounded-xl overflow-hidden bg-gray-100 relative">
@@ -113,11 +116,6 @@ function buildGraduateTile(grad, sectionTitle, section, index) {
     </div>
     <p class="text-xs md:text-sm font-semibold text-gray-800 text-center leading-snug line-clamp-2">${grad.name}</p>
   `;
-  tile.addEventListener('click', () => {
-    const id = typeof index === 'number' ? index : 0;
-    const key = section === 'grade6' ? 'grade6' : 'kindergarten';
-    window.location.href = `profile.html?completer=${key}&id=${id}`;
-  });
   return tile;
 }
 
