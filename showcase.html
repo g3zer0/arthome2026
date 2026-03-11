@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Showcase – ArtHome 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-gray-50 font-sans text-gray-900 min-h-screen">
+
+    <header class="sticky top-0 z-20 bg-white/95 backdrop-blur border-b border-gray-100">
+        <div class="max-w-4xl mx-auto px-6 py-4 flex items-center gap-4">
+            <a href="index.html" class="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+                Back to Year in Review
+            </a>
+            <h1 id="showcase-title" class="text-lg font-bold text-gray-900 truncate flex-1 text-center"></h1>
+            <span class="w-24"></span>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-6 py-8">
+        <p id="showcase-date" class="text-sm text-gray-500 mb-6 text-center"></p>
+        <div id="showcase-gallery" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        <p id="showcase-empty" class="text-center text-gray-500 py-12 hidden">No photos in this showcase yet.</p>
+    </main>
+
+    <script>
+        const showcaseData = {
+          'class-a': { title: 'Class A Memories', date: '2025–2026', images: ['https://picsum.photos/seed/classa1/800/600', 'https://picsum.photos/seed/classa2/800/600', 'https://picsum.photos/seed/classa3/800/600'] },
+          'class-b': { title: 'Class B Memories', date: '2025–2026', images: ['https://picsum.photos/seed/classb1/800/600', 'https://picsum.photos/seed/classb2/800/600', 'https://picsum.photos/seed/classb3/800/600'] },
+          'class-c': { title: 'Class C Memories', date: '2025–2026', images: ['https://picsum.photos/seed/classc1/800/600', 'https://picsum.photos/seed/classc2/800/600', 'https://picsum.photos/seed/classc3/800/600'] },
+          'class-d': { title: 'Class D Memories', date: '2025–2026', images: ['https://picsum.photos/seed/classd1/800/600', 'https://picsum.photos/seed/classd2/800/600', 'https://picsum.photos/seed/classd3/800/600'] },
+          'class-e': { title: 'Class E Memories', date: '2025–2026', images: ['https://picsum.photos/seed/classe1/800/600', 'https://picsum.photos/seed/classe2/800/600', 'https://picsum.photos/seed/classe3/800/600'] },
+          'class-f': { title: 'Class F Memories', date: '2025–2026', images: ['https://picsum.photos/seed/classf1/800/600', 'https://picsum.photos/seed/classf2/800/600', 'https://picsum.photos/seed/classf3/800/600'] },
+          'arthome-in-a-year': { title: 'Arthome in a Year', date: '2025–2026', images: ['https://picsum.photos/seed/arthome1/800/600', 'https://picsum.photos/seed/arthome2/800/600', 'https://picsum.photos/seed/arthome3/800/600'] },
+          'life-at-arthome': { title: 'Life at Arthome', date: '2025–2026', images: ['https://picsum.photos/seed/life1/800/600', 'https://picsum.photos/seed/life2/800/600', 'https://picsum.photos/seed/life3/800/600'] },
+          'teachers-at-arthome': { title: 'Teachers at ArtHome', date: '2025–2026', images: ['https://picsum.photos/seed/teachers1/800/600', 'https://picsum.photos/seed/teachers2/800/600', 'https://picsum.photos/seed/teachers3/800/600'] },
+        };
+
+        const params = new URLSearchParams(window.location.search);
+        const galleryId = params.get('gallery') || '';
+        const data = showcaseData[galleryId];
+
+        const titleEl = document.getElementById('showcase-title');
+        const dateEl = document.getElementById('showcase-date');
+        const galleryEl = document.getElementById('showcase-gallery');
+        const emptyEl = document.getElementById('showcase-empty');
+
+        if (data) {
+          document.title = data.title + ' – ArtHome 2026';
+          titleEl.textContent = data.title;
+          dateEl.textContent = data.date;
+          if (data.images && data.images.length) {
+            data.images.forEach((src, i) => {
+              const a = document.createElement('a');
+              a.href = src;
+              a.target = '_blank';
+              a.rel = 'noopener';
+              a.className = 'block rounded-xl overflow-hidden bg-gray-100 aspect-[4/3] hover:ring-2 hover:ring-blue-400 transition-all';
+              a.innerHTML = `<img src="${src}" alt="${data.title} ${i + 1}" class="w-full h-full object-cover" loading="lazy" />`;
+              galleryEl.appendChild(a);
+            });
+          } else {
+            emptyEl.classList.remove('hidden');
+          }
+        } else {
+          document.title = 'Showcase – ArtHome 2026';
+          titleEl.textContent = 'Showcase';
+          emptyEl.textContent = 'Gallery not found.';
+          emptyEl.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

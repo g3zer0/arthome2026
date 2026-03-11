@@ -44,14 +44,16 @@
         </div>
     </section>
 
-    <main id="timeline" class="max-w-md mx-auto px-6 py-16 relative">
+    <main id="timeline" class="w-full max-w-lg mx-auto px-6 py-16 relative">
         <div class="text-center mb-12">
             <h2 class="text-3xl font-bold text-gray-900 mb-2">Year in Review</h2>
             <p class="text-gray-500">A timeline of our best moments</p>
         </div>
-        <div class="relative pb-8">
-            <div class="absolute left-[39px] top-0 bottom-0 w-0.5 bg-gray-200 rounded-full"></div>
-            <div id="timeline-container" class="space-y-10 relative"></div>
+        <div class="relative flex justify-center pb-8">
+            <div class="relative flex flex-col items-center w-full max-w-md">
+                <div class="absolute left-1/2 top-2 bottom-2 w-0.5 -translate-x-1/2 bg-gray-200 rounded-full pointer-events-none"></div>
+                <div id="timeline-container" class="relative w-full space-y-0"></div>
+            </div>
         </div>
     </main>
 

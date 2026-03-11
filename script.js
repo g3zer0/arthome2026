@@ -1,58 +1,14 @@
-// Timeline Data: Edit this array to add or change events
+// Timeline Data: synced with showcase pages (showcase.html?gallery=<id>)
 const timelineData = [
-  {
-    id: '1',
-    date: 'September 2023',
-    title: 'Senior Year Begins',
-    description: 'The first day of our final year. Reunited with friends and ready for the journey ahead.',
-    images: [
-      'https://picsum.photos/seed/senior1/800/1200',
-      'https://picsum.photos/seed/senior2/1200/800',
-    ],
-  },
-  {
-    id: '2',
-    date: 'October 2023',
-    title: 'Homecoming Week',
-    description: 'Spirit week, the big game, and dancing the night away.',
-    images: [
-      'https://picsum.photos/seed/hoco1/1000/1000',
-      'https://picsum.photos/seed/hoco2/1200/800',
-      'https://picsum.photos/seed/hoco3/800/1200',
-    ],
-  },
-  {
-    id: '3',
-    date: 'December 2023',
-    title: 'Winter Formal',
-    description: 'A magical night celebrating the end of the semester.',
-    images: [
-      'https://picsum.photos/seed/formal1/1000/1200',
-      'https://picsum.photos/seed/formal2/1200/900',
-      'https://picsum.photos/seed/formal3/800/800',
-    ],
-  },
-  {
-    id: '4',
-    date: 'April 2024',
-    title: 'Senior Trip',
-    description: 'Unforgettable memories made on our final class trip together.',
-    images: [
-      'https://picsum.photos/seed/trip1/800/1200',
-      'https://picsum.photos/seed/trip2/1200/800',
-    ],
-  },
-  {
-    id: '5',
-    date: 'June 2024',
-    title: 'Graduation Day',
-    description: 'We did it! Tossing our caps and saying our goodbyes as we step into the future.',
-    images: [
-      'https://picsum.photos/seed/grad1/1200/800',
-      'https://picsum.photos/seed/grad2/800/1200',
-      'https://picsum.photos/seed/grad3/1000/1000',
-    ],
-  }
+  { id: 'class-a', date: '2025–2026', title: 'Class A Memories', description: 'Moments and memories from Class A.', images: ['https://picsum.photos/seed/classa1/800/600', 'https://picsum.photos/seed/classa2/800/600', 'https://picsum.photos/seed/classa3/800/600'] },
+  { id: 'class-b', date: '2025–2026', title: 'Class B Memories', description: 'Moments and memories from Class B.', images: ['https://picsum.photos/seed/classb1/800/600', 'https://picsum.photos/seed/classb2/800/600', 'https://picsum.photos/seed/classb3/800/600'] },
+  { id: 'class-c', date: '2025–2026', title: 'Class C Memories', description: 'Moments and memories from Class C.', images: ['https://picsum.photos/seed/classc1/800/600', 'https://picsum.photos/seed/classc2/800/600', 'https://picsum.photos/seed/classc3/800/600'] },
+  { id: 'class-d', date: '2025–2026', title: 'Class D Memories', description: 'Moments and memories from Class D.', images: ['https://picsum.photos/seed/classd1/800/600', 'https://picsum.photos/seed/classd2/800/600', 'https://picsum.photos/seed/classd3/800/600'] },
+  { id: 'class-e', date: '2025–2026', title: 'Class E Memories', description: 'Moments and memories from Class E.', images: ['https://picsum.photos/seed/classe1/800/600', 'https://picsum.photos/seed/classe2/800/600', 'https://picsum.photos/seed/classe3/800/600'] },
+  { id: 'class-f', date: '2025–2026', title: 'Class F Memories', description: 'Moments and memories from Class F.', images: ['https://picsum.photos/seed/classf1/800/600', 'https://picsum.photos/seed/classf2/800/600', 'https://picsum.photos/seed/classf3/800/600'] },
+  { id: 'arthome-in-a-year', date: '2025–2026', title: 'Arthome in a Year', description: 'A year in the life of ArtHome.', images: ['https://picsum.photos/seed/arthome1/800/600', 'https://picsum.photos/seed/arthome2/800/600', 'https://picsum.photos/seed/arthome3/800/600'] },
+  { id: 'life-at-arthome', date: '2025–2026', title: 'Life at Arthome', description: 'Daily life and spirit at ArtHome.', images: ['https://picsum.photos/seed/life1/800/600', 'https://picsum.photos/seed/life2/800/600', 'https://picsum.photos/seed/life3/800/600'] },
+  { id: 'teachers-at-arthome', date: '2025–2026', title: 'Teachers at ArtHome', description: 'Our teachers and mentors at ArtHome.', images: ['https://picsum.photos/seed/teachers1/800/600', 'https://picsum.photos/seed/teachers2/800/600', 'https://picsum.photos/seed/teachers3/800/600'] },
 ];
 
 // Select DOM Elements
@@ -209,18 +165,15 @@ function setupGraduatesControls() {
 function renderTimeline() {
   timelineData.forEach((event, index) => {
     const card = document.createElement('div');
-    card.className = "flex items-start gap-5 cursor-pointer group opacity-0 translate-y-5 transition-all duration-700 ease-out";
+    card.className = "flex flex-col items-center cursor-pointer group opacity-0 translate-y-5 transition-all duration-700 ease-out -mb-8 last:mb-0";
     card.innerHTML = `
-      <div class="relative z-10 mt-1.5">
-        <div class="w-5 h-5 rounded-full bg-blue-600 ring-4 ring-blue-100 flex items-center justify-center shadow-md">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M22 10L12 4 2 10l10 6 10-6Z"/>
-            <path d="M6 12v5c0 .6.4 1.1 1 1.3l5 1.7 5-1.7c.6-.2 1-.7 1-1.3v-5"/>
-          </svg>
-        </div>
+      <div class="relative z-10 flex items-center justify-center w-5 h-5 rounded-full bg-blue-600 ring-4 ring-blue-100 shadow-md shrink-0">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 10L12 4 2 10l10 6 10-6Z"/>
+          <path d="M6 12v5c0 .6.4 1.1 1 1.3l5 1.7 5-1.7c.6-.2 1-.7 1-1.3v-5"/>
+        </svg>
       </div>
-      <div class="flex-1 bg-white rounded-2xl shadow-sm border border-gray-100 p-5 relative timeline-card">
-        <div class="hidden md:block absolute -left-6 top-8 w-6 h-0.5 bg-blue-100"></div>
+      <div class="flex-1 w-full -mt-2.5 pt-2.5 bg-white rounded-2xl shadow-sm border border-gray-100 p-5 relative timeline-card max-w-md">
         <div class="text-xs font-semibold text-blue-600 uppercase tracking-wider mb-1.5">${event.date}</div>
         <h3 class="text-lg font-bold text-gray-900 mb-2 leading-tight">${event.title}</h3>
         <p class="text-gray-600 text-sm mb-4 line-clamp-2">${event.description}</p>
@@ -233,7 +186,7 @@ function renderTimeline() {
         </div>
       </div>
     `;
-    card.addEventListener('click', () => openModal(event));
+    card.addEventListener('click', () => { window.location.href = `showcase.html?gallery=${encodeURIComponent(event.id)}`; });
     timelineContainer.appendChild(card);
     
     // Animation trigger
