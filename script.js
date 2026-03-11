@@ -89,7 +89,7 @@ const graduatesData = [
 
 // Grade 6 Completers (name and Google Drive photo id)
 const grade6Title = 'Grade 6 Completers';
-const driveImageUrl = (id) => `https://drive.google.com/uc?id=${id}`;
+const driveImageUrl = (id) => `https://lh3.googleusercontent.com/u/0/d/${id}=w1000`;
 const grade6Data = [
   { name: 'Amores, Darielle Keisler B.', photoId: '1fEaV4uJlK5tCgOaX5dD4E8lM412PFbii' },
   { name: 'Caspillo, Kenth Victor D.', photoId: '1wRPGpRpqwbcnm10DCKrt3UaJsKfxvsZa' },
