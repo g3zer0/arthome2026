@@ -87,23 +87,19 @@ const graduatesData = [
   };
 });
 
-// Grade 6 Completers (edit names and add real photo URLs as needed)
+// Grade 6 Completers (name and Google Drive photo id)
 const grade6Title = 'Grade 6 Completers';
+const driveImageUrl = (id) => `https://drive.google.com/uc?export=view&id=${id}`;
 const grade6Data = [
-  'Grade 6 Completer 1', 'Grade 6 Completer 2', 'Grade 6 Completer 3', 'Grade 6 Completer 4', 'Grade 6 Completer 5',
-  'Grade 6 Completer 6', 'Grade 6 Completer 7', 'Grade 6 Completer 8', 'Grade 6 Completer 9', 'Grade 6 Completer 10',
-  'Grade 6 Completer 11', 'Grade 6 Completer 12',
-].map((name) => {
-  const seed = encodeURIComponent(name.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '-').replace(/-+/g, '-').replace(/(^-|-$)/g, ''));
-  return {
-    name,
-    avatar: `https://api.dicebear.com/9.x/adventurer/svg?seed=grade6-${seed}`,
-    photos: [
-      `https://picsum.photos/seed/grade6-${seed}-1/1200/800`,
-      `https://picsum.photos/seed/grade6-${seed}-2/800/1200`,
-      `https://picsum.photos/seed/grade6-${seed}-3/1000/1000`,
-    ],
-  };
+  { name: 'Amores, Darielle Keisler B.', photoId: '1fEaV4uJlK5tCgOaX5dD4E8lM412PFbii' },
+  { name: 'Caspillo, Kenth Victor D.', photoId: '1wRPGpRpqwbcnm10DCKrt3UaJsKfxvsZa' },
+  { name: 'Estilo, Prince Genovie B.', photoId: '1q15vP7hyvddR29dXHQjBpnm69u7mJcpo' },
+  { name: 'Flores, Mc Hene V.', photoId: '1pexk97MpEz3y1ZbWnWscN9X5QvdlWBnk' },
+  { name: 'Narciso, Tala B.', photoId: '1jjHlwm_EjkHKeF6rghz0KrBO0PVSeMeD' },
+  { name: 'Villa, Todd Ozwald G.', photoId: '1EUvhkml2RQ-w40IdD1FMsqqT0YtJp74i' },
+].map(({ name, photoId }) => {
+  const src = driveImageUrl(photoId);
+  return { name, avatar: src, photos: [src] };
 });
 
 function buildGraduateTile(grad, sectionTitle) {
