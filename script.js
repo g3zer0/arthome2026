@@ -255,7 +255,7 @@ function renderTimeline() {
   timelineData.forEach((event, index) => {
     const iconPath = getTimelineIcon(index);
     const card = document.createElement('div');
-    card.className = "flex flex-col items-center cursor-pointer group opacity-0 translate-y-5 transition-all duration-700 ease-out mb-10 last:mb-0";
+    card.className = "flex flex-col items-center cursor-pointer group opacity-0 translate-y-5 transition-all duration-700 ease-out flex-shrink-0";
     card.innerHTML = `
       <div class="relative z-10 flex items-center justify-center w-5 h-5 rounded-full bg-blue-600 ring-4 ring-blue-100 shadow-md shrink-0">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${iconPath}</svg>

@@ -26,6 +26,14 @@
         <p id="showcase-empty" class="text-center text-gray-500 py-12 hidden">No photos in this showcase yet.</p>
     </main>
 
+    <!-- Full-screen lightbox for photo/video -->
+    <div id="lightbox" class="fixed inset-0 z-50 bg-black/95 hidden flex-col items-center justify-center p-4" role="dialog" aria-modal="true" aria-label="Media viewer">
+        <button id="lightbox-close" type="button" class="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors" aria-label="Close">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+        <div id="lightbox-content" class="relative w-full h-full max-w-6xl max-h-[90vh] flex items-center justify-center"></div>
+    </div>
+
     <script>
         const showcaseData = {
           'class-a': { title: 'Class A Memories', date: '2025–2026', images: ['https://picsum.photos/seed/classa1/800/600', 'https://picsum.photos/seed/classa2/800/600', 'https://picsum.photos/seed/classa3/800/600'] },
@@ -47,20 +55,92 @@
         const dateEl = document.getElementById('showcase-date');
         const galleryEl = document.getElementById('showcase-gallery');
         const emptyEl = document.getElementById('showcase-empty');
+        const lightbox = document.getElementById('lightbox');
+        const lightboxContent = document.getElementById('lightbox-content');
+        const lightboxClose = document.getElementById('lightbox-close');
+
+        function isVideoUrl(url) {
+          if (typeof url !== 'string') return false;
+          const u = url.split('?')[0].toLowerCase();
+          return /\.(mp4|webm|ogg|mov)(\?|$)/.test(u);
+        }
+
+        function normalizeMediaItems(raw) {
+          if (!raw || !raw.length) return [];
+          const list = raw.images || raw.media || raw;
+          return list.map((item) => {
+            if (typeof item === 'string') {
+              return { type: isVideoUrl(item) ? 'video' : 'image', url: item };
+            }
+            return { type: item.type || 'image', url: item.url || item.src };
+          });
+        }
+
+        function openLightbox(media) {
+          lightboxContent.innerHTML = '';
+          lightbox.classList.remove('hidden');
+          lightbox.classList.add('flex');
+          document.body.style.overflow = 'hidden';
+
+          if (media.type === 'video') {
+            const video = document.createElement('video');
+            video.src = media.url;
+            video.controls = true;
+            video.autoplay = true;
+            video.playsInline = true;
+            video.className = 'max-w-full max-h-[90vh] w-full object-contain';
+            lightboxContent.appendChild(video);
+          } else {
+            const img = document.createElement('img');
+            img.src = media.url;
+            img.alt = data ? data.title : 'Photo';
+            img.className = 'max-w-full max-h-[90vh] w-auto object-contain';
+            lightboxContent.appendChild(img);
+          }
+        }
+
+        function closeLightbox() {
+          const video = lightboxContent.querySelector('video');
+          if (video) {
+            video.pause();
+            video.removeAttribute('src');
+          }
+          lightbox.classList.add('hidden');
+          lightbox.classList.remove('flex');
+          document.body.style.overflow = '';
+          lightboxContent.innerHTML = '';
+        }
+
+        lightboxClose.addEventListener('click', closeLightbox);
+        lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
 
         if (data) {
           document.title = data.title + ' – ArtHome 2026';
           titleEl.textContent = data.title;
           dateEl.textContent = data.date;
-          if (data.images && data.images.length) {
-            data.images.forEach((src, i) => {
-              const a = document.createElement('a');
-              a.href = src;
-              a.target = '_blank';
-              a.rel = 'noopener';
-              a.className = 'block rounded-xl overflow-hidden bg-gray-100 aspect-[4/3] hover:ring-2 hover:ring-blue-400 transition-all';
-              a.innerHTML = `<img src="${src}" alt="${data.title} ${i + 1}" class="w-full h-full object-cover" loading="lazy" />`;
-              galleryEl.appendChild(a);
+          const items = normalizeMediaItems(data);
+          if (items.length) {
+            items.forEach((media, i) => {
+              const isVideo = media.type === 'video';
+              const button = document.createElement('button');
+              button.type = 'button';
+              button.className = 'block rounded-xl overflow-hidden bg-gray-100 aspect-[4/3] hover:ring-2 hover:ring-blue-400 transition-all text-left focus:outline-none focus:ring-2 focus:ring-blue-400';
+              if (isVideo) {
+                button.innerHTML = `
+                  <video src="${media.url}" class="w-full h-full object-cover pointer-events-none" muted preload="metadata"></video>
+                  <span class="absolute inset-0 flex items-center justify-center bg-black/30 pointer-events-none">
+                    <span class="w-14 h-14 rounded-full bg-white/90 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-blue-600 ml-1" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                    </span>
+                  </span>
+                `;
+                button.style.position = 'relative';
+              } else {
+                button.innerHTML = `<img src="${media.url}" alt="${data.title} ${i + 1}" class="w-full h-full object-cover" loading="lazy" />`;
+              }
+              button.addEventListener('click', () => openLightbox(media));
+              galleryEl.appendChild(button);
             });
           } else {
             emptyEl.classList.remove('hidden');
