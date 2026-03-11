@@ -31,13 +31,13 @@
                     <div class="text-center">
                         <p class="text-xs font-medium text-gray-500 mb-2">Profile Photo</p>
                         <div class="aspect-square rounded-xl overflow-hidden bg-gray-100">
-                            <img id="profile-photo" src="" alt="Profile" class="w-full h-full object-cover object-[center_25%]" onerror="this.onerror=null;this.src='https://placehold.co/400x400/e2e8f0/64748b?text=Photo';" />
+                            <img id="profile-photo" src="" alt="Profile" class="w-full h-full object-cover object-[center_25%]" onerror="this.onerror=null;this.src='https://picsum.photos/seed/fallback/400/400';" />
                         </div>
                     </div>
                     <div class="text-center">
                         <p class="text-xs font-medium text-gray-500 mb-2">Formal Attire</p>
                         <div class="aspect-square rounded-xl overflow-hidden bg-gray-100">
-                            <img id="profile-formal" src="" alt="Formal attire" class="w-full h-full object-cover object-[center_25%]" onerror="this.onerror=null;this.src='https://placehold.co/400x400/e2e8f0/64748b?text=Photo';" />
+                            <img id="profile-formal" src="" alt="Formal attire" class="w-full h-full object-cover object-[center_25%]" onerror="this.onerror=null;this.src='https://picsum.photos/seed/fallback/400/400';" />
                         </div>
                     </div>
                 </div>
@@ -60,7 +60,6 @@
     </div>
 
     <script>
-        const PLACEHOLDER_IMAGE = 'https://placehold.co/400x400/e2e8f0/64748b?text=Photo';
         const driveImageUrl = (id) => `https://lh3.googleusercontent.com/u/0/d/${id}=w1000`;
 
         const kindergartenNames = [
@@ -117,7 +116,7 @@
           img.src = src;
           img.alt = 'Artwork';
           img.className = 'max-w-full max-h-[90vh] w-auto object-contain';
-          img.onerror = function() { this.onerror = null; this.src = PLACEHOLDER_IMAGE; };
+          img.onerror = function() { this.onerror = null; this.src = 'https://picsum.photos/seed/fallback/400/400'; };
           lightboxContent.appendChild(img);
           lightbox.classList.remove('hidden');
           lightbox.classList.add('flex');
@@ -145,7 +144,7 @@
               const btn = document.createElement('button');
               btn.type = 'button';
               btn.className = 'block rounded-xl overflow-hidden bg-gray-100 aspect-square hover:ring-2 hover:ring-blue-400 transition-all';
-              btn.innerHTML = `<img src="${src}" alt="Artwork" class="w-full h-full object-cover" loading="lazy" onerror="this.onerror=null;this.src='${PLACEHOLDER_IMAGE}';" />`;
+              btn.innerHTML = `<img src="${src}" alt="Artwork" class="w-full h-full object-cover" loading="lazy" onerror="this.onerror=null;this.src='https://picsum.photos/seed/fallback/400/400';" />`;
               btn.addEventListener('click', () => openLightbox(src));
               artworksEl.appendChild(btn);
             });

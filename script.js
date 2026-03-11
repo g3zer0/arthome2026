@@ -1,6 +1,3 @@
-// Placeholder image when photos fail to load
-const PLACEHOLDER_IMAGE = 'https://placehold.co/400x400/e2e8f0/64748b?text=Photo';
-
 // Timeline Data: synced with showcase pages (showcase.html?gallery=<id>)
 const timelineData = [
   { id: 'class-a', date: '2025–2026', title: 'Class A Memories', description: 'Moments and memories from Class A.', images: ['https://picsum.photos/seed/classa1/800/600', 'https://picsum.photos/seed/classa2/800/600', 'https://picsum.photos/seed/classa3/800/600'] },
@@ -115,7 +112,7 @@ function buildGraduateTile(grad, sectionTitle, section, index) {
   tile.setAttribute('title', grad.name);
   tile.innerHTML = `
     <div class="w-full aspect-square rounded-xl overflow-hidden bg-gray-100 relative">
-      <img src="${grad.avatar}" alt="${grad.name}" class="absolute inset-0 w-full h-full object-cover object-[center_25%]" loading="lazy" onerror="this.onerror=null;this.src='${PLACEHOLDER_IMAGE}';" />
+      <img src="${grad.avatar}" alt="${grad.name}" class="absolute inset-0 w-full h-full object-cover object-[center_25%]" loading="lazy" onerror="this.onerror=null;this.src='https://picsum.photos/seed/fallback/400/400';" />
     </div>
     <p class="text-xs md:text-sm font-semibold text-gray-800 text-center leading-snug line-clamp-2">${grad.name}</p>
   `;
@@ -263,7 +260,7 @@ function renderTimeline() {
         <h3 class="text-lg font-bold text-gray-900 mb-2 leading-tight">${event.title}</h3>
         <p class="text-gray-600 text-sm mb-4 line-clamp-2">${event.description}</p>
         <div class="relative rounded-xl overflow-hidden h-32 bg-gray-100">
-          <img src="${event.images[0]}" alt="${event.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.onerror=null;this.src='${PLACEHOLDER_IMAGE}';" />
+          <img src="${event.images[0]}" alt="${event.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.onerror=null;this.src='https://picsum.photos/seed/fallback/400/400';" />
           <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
           <div class="absolute bottom-3 right-3 bg-black/40 backdrop-blur-md text-white text-xs font-medium px-2.5 py-1 rounded-full flex items-center gap-1.5">
             ${event.images.length} Photos
@@ -307,7 +304,7 @@ function openModal(event) {
   event.images.forEach((imgSrc, i) => {
     const imgDiv = document.createElement('div');
     imgDiv.className = "w-full h-full flex-shrink-0 snap-center flex items-center justify-center p-4 pt-20 pb-24";
-    imgDiv.innerHTML = `<img src="${imgSrc}" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl" />`;
+    imgDiv.innerHTML = `<img src="${imgSrc}" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl" onerror="this.onerror=null;this.src='https://picsum.photos/seed/fallback/400/400';" />`;
     carouselContainer.appendChild(imgDiv);
 
     const dot = document.createElement('div');
