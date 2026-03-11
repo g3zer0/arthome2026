@@ -109,8 +109,8 @@ function buildGraduateTile(grad, sectionTitle) {
   tile.className = 'w-40 md:w-52 flex-shrink-0 flex flex-col gap-2';
   tile.setAttribute('title', grad.name);
   tile.innerHTML = `
-    <div class="w-full rounded-xl overflow-hidden bg-gray-100 relative" style="padding-top: 75%;">
-      <img src="${grad.avatar}" alt="${grad.name}" class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+    <div class="w-full aspect-square rounded-xl overflow-hidden bg-gray-100 relative">
+      <img src="${grad.avatar}" alt="${grad.name}" class="absolute inset-0 w-full h-full object-cover object-center" loading="lazy" />
     </div>
     <p class="text-xs md:text-sm font-semibold text-gray-800 text-center leading-snug line-clamp-2">${grad.name}</p>
   `;
