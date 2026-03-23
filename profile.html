@@ -62,18 +62,48 @@
     <script>
         const driveImageUrl = (id) => `https://lh3.googleusercontent.com/u/0/d/${id}=w1000`;
 
-        const kindergartenNames = [
-          'Alquizar, Braxton Quinn B.', 'Camarista, Lia Isabelle L.', 'Dela Cruz, Mervin Jr. D.', 'Denila, Ashiana Ysabelle Y.', 'Dulaugon, Elisha Faith H.',
-          'Evangelista, Tara Kaisley S.', 'Gabo, Zheanne Nathanielle T.', 'Gamueta, Carisza Maureen M.', 'Gialon, Eonah Iris Saoirse R.', 'Lopez, Nathania Erised F.',
-          'Maghamil, Jen Myrrh L.', 'Mahinay, Astrid Nathania T.', 'Mallorca, Bren Christoffe A.', 'Manlupig, Andrea Jurez C.', 'Mansueto, Denise Zephora A.',
-          'Marilla, Pat Destiny P.', 'Masong, Aiah B.', 'Miralles, Arthemis Thoby N.', 'Pahoyo, Zhea May T.', 'Panla-an, Jan Mars L.', 'Pañer, Krysthea Hera',
-          'Potoy, Magnus Gaven M.', 'Potoy, Theophilus M.', 'Quijote, Kelly Thaddia M.', 'Redito, Rigel Moon Aries K.', 'Salarda, Teomasio Joeleb', 'Silagan, Adih Feign C.', 'Vicente, Kristiana J.',
-        ];
-        const kindergartenCompleters = kindergartenNames.map((name) => {
+        const kindergartenCompleters = [
+          { name: 'Alquizar, Braxton Quinn B.', photoId: '1Pg7qRyJSp_Eoj-53Zcvl0ed1pFqslfW1' },
+          { name: 'Camarista, Lia Isabelle L.', photoId: '1xRrebxrcphrTxnrIGTx4EF17Ym12E9H-' },
+          { name: 'Dela Cruz, Mervin Jr. D.', photoId: '1X8ekaBV8I0golWc811HesBkUvl8gn_hC' },
+          { name: 'Denila, Ashiana Ysabelle Y.', photoId: '1YuiHY94TUY8Wu9kKoXndrtXg25g93kHB' },
+          { name: 'Dulaugon, Elisha Faith H.', photoId: '1dcWJSxESglOc9nCj5OmDhNkhJD6AdI6b' },
+          { name: 'Evangelista, Tara Kaisley S.', photoId: '1sTa8RDonNw33x69RnF_I3eBMHG-YjcYM' },
+          { name: 'Gabo, Zheanne Nathanielle T.', photoId: '1D6eV0F9pQ6eDE414JUZdffkH2RjPrMDW' },
+          { name: 'Gamueta, Carisza Maureen M.', photoId: '1MIjQqPqoob7x8JDFQkhPNI6DhCy1m2t3' },
+          { name: 'Gialon, Eonah Iris Saoirse R.', photoId: '1pd3opb47j2BLz0VDJeKsjqa-T-Ie6Osm' },
+          { name: 'Lopez, Nathania Erised F.', photoId: '12LWBr02_SzdxKYTTp_Gzrv2Fbf4sA958' },
+          { name: 'Maghamil, Jen Myrrh L.', photoId: '16cNhCsEBr3X4-IF1onZUikFBKCFLA_6s' },
+          { name: 'Mahinay, Astrid Nathania T.', photoId: '1rDyzZBCPWgP4C9WPELwJ_rbg8Kkcvl89' },
+          { name: 'Mallorca, Bren Christoffe A.', photoId: '1hNFzLixWDiE8xa2diEt_a9ni7cBz6VX9' },
+          { name: 'Manlupig, Andrea Jurez C.', photoId: '109nN0rgyf6xEFLnKqawKb0jUrrrrg2Lj' },
+          { name: 'Mansueto, Denise Zephora A.', photoId: '1BTDH3gKHCbBCtfER8orbto1aGbptpCQn' },
+          { name: 'Marilla, Pat Destiny P.', photoId: '1WxwzYzW-7Wsn-fI0zlvST1nstUKv8Kp5' },
+          { name: 'Masong, Aiah B.', photoId: '1NY5pdOXK1J7FjZCETsSTepGK5noqPfQT' },
+          { name: 'Miralles, Arthemis Thoby N.', photoId: '1CYeWn04TONIChfmERNdJP-fJK3r4Wruy' },
+          { name: 'Pahoyo, Zhea May T.', photoId: '1wJWPyHcSmOxVaiqdxyK79CENspOaK6gJ' },
+          { name: 'Panla-an, Jan Mars L.', photoId: '1qPA5X_-9hjheVk-tW4cQEscHHHgMwKeI' },
+          { name: 'Pañer, Krysthea Hera' },
+          { name: 'Potoy, Magnus Gaven M.', photoId: '1xL_w2uJ8FjaQ-YtamPSyil07o00VJEJ8' },
+          { name: 'Potoy, Theophilus M.', photoId: '1mRotSRzpH-4HaNFXBJNdV7UugEMBC6t2' },
+          { name: 'Quijote, Kelly Thaddia M.', photoId: '1kgOsrZPU0f7vJcnhWZv7VZ5QbcB7sG_0' },
+          { name: 'Redito, Rigel Moon Aries K.', photoId: '1eWZTRIlSWV1St6UqILY-tkI9aFzOTUxF' },
+          { name: 'Salarda, Teomasio Joeleb', photoId: '1OeVGFcSEjPMTXZJ49ageR4Mf6Cbtatnr' },
+          { name: 'Silagan, Adih Feign C.', photoId: '1kGKqzdRfgjW49RsgJHjP8A1T6mYbZw67' },
+          { name: 'Vicente, Kristiana J.', photoId: '1ds1BJJSvCQhV6BEWIe0f-wLp-VZn6r5q' },
+        ].map(({ name, photoId }) => {
           const seed = encodeURIComponent(name.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '-').replace(/-+/g, '-').replace(/(^-|-$)/g, ''));
-          const avatar = `https://api.dicebear.com/9.x/adventurer/svg?seed=${seed}`;
-          const photos = [`https://picsum.photos/seed/grad-${seed}-1/1200/800`, `https://picsum.photos/seed/grad-${seed}-2/800/1200`, `https://picsum.photos/seed/grad-${seed}-3/1000/1000`];
-          return { name, sectionTitle: 'Kindergarten Completers', profilePhoto: avatar, formalAttire: photos[0] || avatar, artworks: photos };
+          if (photoId) {
+            const src = driveImageUrl(photoId);
+            return { name, sectionTitle: 'Kindergarten Completers', profilePhoto: src, formalAttire: src, artworks: [src] };
+          }
+          const profilePhoto = `https://api.dicebear.com/9.x/adventurer/svg?seed=${seed}`;
+          const artworks = [
+            `https://picsum.photos/seed/grad-${seed}-1/1200/800`,
+            `https://picsum.photos/seed/grad-${seed}-2/800/1200`,
+            `https://picsum.photos/seed/grad-${seed}-3/1000/1000`,
+          ];
+          return { name, sectionTitle: 'Kindergarten Completers', profilePhoto, formalAttire: artworks[0] || profilePhoto, artworks };
         });
 
         const grade6Completers = [
