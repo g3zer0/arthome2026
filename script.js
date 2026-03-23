@@ -250,12 +250,16 @@ function renderTimeline() {
   timelineData.forEach((event, index) => {
     const iconPath = getTimelineIcon(index);
     const card = document.createElement('div');
-    card.className = "flex flex-col items-center cursor-pointer group opacity-0 translate-y-5 transition-all duration-700 ease-out flex-shrink-0";
+    card.className =
+      'relative flex w-full max-w-md flex-col items-center cursor-pointer group opacity-0 translate-y-5 transition-all duration-700 ease-out flex-shrink-0 mx-auto -mb-14 last:mb-0';
+    card.style.zIndex = String(20 + index);
     card.innerHTML = `
-      <div class="relative z-10 flex items-center justify-center w-5 h-5 rounded-full bg-blue-600 ring-4 ring-blue-100 shadow-md shrink-0">
+      <div class="relative z-20 flex w-full justify-center">
+        <div class="flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 shadow-md ring-4 ring-blue-100">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${iconPath}</svg>
+        </div>
       </div>
-      <div class="flex-1 w-full mt-1 pt-2 bg-white rounded-2xl shadow-sm border border-gray-100 p-5 relative timeline-card max-w-md">
+      <div class="relative z-10 mt-1 w-full rounded-2xl border border-gray-100 bg-white p-5 pt-4 shadow-sm timeline-card">
         <div class="text-xs font-semibold text-blue-600 uppercase tracking-wider mb-1.5">${event.date}</div>
         <h3 class="text-lg font-bold text-gray-900 mb-2 leading-tight">${event.title}</h3>
         <p class="text-gray-600 text-sm mb-4 line-clamp-2">${event.description}</p>
